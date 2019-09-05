@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using DAL.Model;
+using DAL.Controllers;
+using ServiceLayer;
+
+namespace WebApplicationHelloWorld.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BookController : ControllerBase
+    {
+        private readonly BookRepository _bookRepository;
+        Services services;
+        public BookController(BookRepository bookRepository)
+        {
+            _bookRepository = bookRepository;
+            services = new Services();
+        }
+        // GET: api/Book
+        [HttpGet]
+        public Response Get()
+        {
+            var result = services.GetAllBooks(_bookRepository);
+            return result;
+            //return _bookRepository.GetAllBooks();
+        }
+
+        // GET: api/Book/5
+        [HttpGet("{id}", Name = "Get")]
+        public Response Get(int id)
+        {
+            var result = services.GetById(id, _bookRepository);
+            HttpContext.Response.StatusCode = result.StatusCode;
+            return result;
+        }
+
+        // POST: api/Book
+        [HttpPost]
+        public Response Post(Book book)
+        {
+            var result = services.PostByBook(book, _bookRepository);
+            HttpContext.Response.StatusCode = result.StatusCode;
+            return result;
+        }
+
+        // PUT: api/Book/5
+        [HttpPut("{id}")]
+        public Response Put(int id, [FromBody] Book book)
+        {
+            var result = services.UpdateBook(id, book, _bookRepository);
+            HttpContext.Response.StatusCode = result.StatusCode;
+            return result;
+            //return _bookRepository.UpdateBook(id, book);
+        }
+
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+    }
+}
