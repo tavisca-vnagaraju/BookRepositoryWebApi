@@ -17,7 +17,6 @@ namespace WebApiBookTests
             Services services = new Services();
             var result = services.GetAllBooks(bookRepository);
             Assert.Equal(400, result.StatusCode);
-            Assert.Equal("Books Not Found", result.ErrorMessage);
         }
         [Fact]
         public void CheckForAllBooks()
@@ -61,7 +60,7 @@ namespace WebApiBookTests
         public void CheckForPostByBookNegativeId()
         {
             BookRepository bookRepository = new BookRepository();
-            Book book = new Book { Name = "Harry Potter", Author = "Rolling", Price = 400, Id = -1 };
+            Book book = new Book { Name = "Harry Potter", Category="Fiction",Author = "Rolling", Price = 400, Id = -1 };
             Services services = new Services();
             var result = services.PostByBook(book, bookRepository);
             Assert.Equal(400, result.StatusCode);
@@ -70,7 +69,7 @@ namespace WebApiBookTests
         public void CheckForPostByBookNegativePrice()
         {
             BookRepository bookRepository = new BookRepository();
-            Book book = new Book { Name = "Harry Potter", Author = "Rolling", Price = -400, Id = 1 };
+            Book book = new Book { Name = "Harry Potter",Category="Fiction" ,Author = "Rolling", Price = -400, Id = 1 };
             Services services = new Services();
             var result = services.PostByBook(book, bookRepository);
             Assert.Equal(400, result.StatusCode);
@@ -139,7 +138,6 @@ namespace WebApiBookTests
             Book bookUpdate = new Book { Name = "Harry Potter Globet of Fire123", Category = "Fiction", Author = "Rolling", Price = 400, Id = 1 };
             var result = services.UpdateBook(bookUpdate, bookRepository);
             Assert.Equal(400, result.StatusCode);
-            Assert.Equal("Book Name Should Have only Characters", result.ErrorMessage);
         }
         [Fact]
         public void CheckForUpdateBookWithInvalidCategory()

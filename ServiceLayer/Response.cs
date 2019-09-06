@@ -7,7 +7,11 @@ namespace ServiceLayer
     public class Response
     {
         public object Result { get; set; }
-        public string ErrorMessage { get; set; }
+        public List<string> ErrorMessages;
         public int StatusCode { get; set; }
+        public Response()
+        {
+            ErrorMessages = new List<string>();
+        }
     }
 }

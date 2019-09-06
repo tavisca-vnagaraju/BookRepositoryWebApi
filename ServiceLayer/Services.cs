@@ -9,30 +9,33 @@ namespace ServiceLayer
     public class Services
     {
         Response response;
+        Validation validation;
         public Services()
         {
             response = new Response();
+            validation = new Validation();
         }
         public Response GetById(int id, BookRepository bookRepository)
         {
-            if (id < 0)
+            if (validation.IsIdNegative(id))
             {
                 response.StatusCode = 400;
-                response.ErrorMessage = "Invalid Id, Id should be a positive number.";
-                return response;
-            }
-            var books = bookRepository.GetAllBooks();
-            var book = books.Find(x => x.Id == id);
-            if (book == null)
-            {
-                response.StatusCode = 404;
-                response.ErrorMessage = "Book Not Found";
-                return response;
+                response.ErrorMessages.Add("Invalid Id, Id should be a positive number.");
             }
             else
             {
-                response.StatusCode = 200;
-                response.Result = book;
+                var books = bookRepository.GetAllBooks();
+                var book = books.Find(x => x.Id == id);
+                if (book == null)
+                {
+                    response.StatusCode = 404;
+                    response.ErrorMessages.Add("Book Not Found");
+                }
+                else
+                {
+                    response.StatusCode = 200;
+                    response.Result = book;
+                }
             }
             return response;
         }
@@ -43,99 +46,71 @@ namespace ServiceLayer
             if(books.Count <=0)
             {
                 response.StatusCode = 400;
-                response.ErrorMessage = "Books Not Found";
-                return response;
+                response.ErrorMessages.Add("Books Not Found");
             }
             else
             {
                 response.StatusCode = 200;
                 response.Result = books;
-                return response;
             }
+            return response;
         }
 
         public Response PostByBook(Book book, BookRepository bookRepository)
         {
-            if (book.Id < 0)
+            Validate(book);
+            if (response.ErrorMessages.Count == 0)
             {
-                response.StatusCode = 400;
-                response.ErrorMessage = "Invalid Id, Id should be a positive number.";
-                return response;
+                bookRepository.AddBook(book);
+                response.StatusCode = 200;
+                response.Result = bookRepository.GetAllBooks();
             }
-            if (book.Price < 0)
-            {
-                response.StatusCode = 400;
-                response.ErrorMessage = "Invalid Price, Price should be a positive number.";
-                return response;
-            }
-            if (!book.Name.All(x => char.IsLetter(x) || x == ' '))
-            {
-                response.StatusCode = 400;
-                response.ErrorMessage = "Book Name Should Have only Characters";
-                return response;
-            }
-            if (!book.Category.All(x => char.IsLetter(x) || x == ' '))
-            {
-                response.StatusCode = 400;
-                response.ErrorMessage = "Category Name Should Have only Characters";
-                return response;
-            }
-            if (!book.Author.All(x => char.IsLetter(x) || x == ' ' || x == '.'))
-            {
-                response.StatusCode = 400;
-                response.ErrorMessage = "Author Name Should Have only Characters";
-                return response;
-            }
-            bookRepository.AddBook(book);
-            response.StatusCode = 200;
-            response.Result = bookRepository.GetAllBooks();
             return response;
         }
 
         public Response UpdateBook(Book book, BookRepository bookRepository)
         {
-            if (book.Id < 0)
-            {
-                response.StatusCode = 400;
-                response.ErrorMessage = "Invalid Id, Id should be a positive number.";
-                return response;
-            }
-            if (book.Price < 0)
-            {
-                response.StatusCode = 400;
-                response.ErrorMessage = "Invalid Price, Price should be a positive number.";
-                return response;
-            }
-            if (!book.Name.All(x => char.IsLetter(x) || x == ' '))
-            {
-                response.StatusCode = 400;
-                response.ErrorMessage = "Book Name Should Have only Characters";
-                return response;
-            }
-            if (!book.Category.All(x => char.IsLetter(x) || x == ' '))
-            {
-                response.StatusCode = 400;
-                response.ErrorMessage = "Category Name Should Have only Characters";
-                return response;
-            }
-            if (!book.Author.All(x => char.IsLetter(x) || x == ' ' || x == '.'))
-            {
-                response.StatusCode = 400;
-                response.ErrorMessage = "Author Name Should Have only Characters";
-                return response;
-            }
-            if (bookRepository.UpdateBook(book))
+            Validate(book);
+            var isBookUpdated = bookRepository.UpdateBook(book);
+            if (isBookUpdated && response.ErrorMessages.Count == 0)
             {
                 response.StatusCode = 200;
                 response.Result = bookRepository.GetAllBooks();
-                return response;
+                
             }
-            else
+            else if(response.ErrorMessages.Count == 0)
             {
                 response.StatusCode = 404;
-                response.ErrorMessage = "Book Not Found";
             }
             return response;
+        }
+        private void Validate(Book book)
+        {
+            if (validation.IsIdNegative(book.Id))
+            {
+                response.StatusCode = 400;
+                response.ErrorMessages.Add("Invalid Id, Id should be a positive number.");
+            }
+            if (validation.IsPriceNegative(book.Price))
+            {
+                response.StatusCode = 400;
+                response.ErrorMessages.Add("Invalid Price, Price should be a positive number.");
+            }
+            if (!validation.ContainsCharacters(book.Name))
+            {
+                response.StatusCode = 400;
+                response.ErrorMessages.Add("Book Name Should Have only Characters");
+            }
+            if (!validation.ContainsCharacters(book.Category))
+            {
+                response.StatusCode = 400;
+                response.ErrorMessages.Add("Category Name Should Have only Characters");
+            }
+            if (!validation.ContainsCharacters(book.Author))
+            {
+                response.StatusCode = 400;
+                response.ErrorMessages.Add("Author Name Should Have only Characters");
+            }
         }
     }
 }
