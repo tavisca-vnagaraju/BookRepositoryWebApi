@@ -92,7 +92,7 @@ namespace ServiceLayer
             return response;
         }
 
-        public Response UpdateBook(int id, Book book, BookRepository bookRepository)
+        public Response UpdateBook(Book book, BookRepository bookRepository)
         {
             if (book.Id < 0)
             {
@@ -124,9 +124,17 @@ namespace ServiceLayer
                 response.ErrorMessage = "Author Name Should Have only Characters";
                 return response;
             }
-            bookRepository.UpdateBook(id,book);
-            response.StatusCode = 200;
-            response.Result = bookRepository.GetAllBooks();
+            if (bookRepository.UpdateBook(book))
+            {
+                response.StatusCode = 200;
+                response.Result = bookRepository.GetAllBooks();
+                return response;
+            }
+            else
+            {
+                response.StatusCode = 404;
+                response.ErrorMessage = "Book Not Found";
+            }
             return response;
         }
     }

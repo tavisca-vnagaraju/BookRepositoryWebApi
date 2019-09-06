@@ -23,15 +23,19 @@ namespace DAL.Controllers
             return _bookList;
         }
 
-        public List<Book> UpdateBook(int id, Book book)
+        public bool UpdateBook(Book book)
         {
-            var _book = _bookList.Find(x => x.Id == id);
+            var _book = _bookList.Find(x => x.Id == book.Id);
             if(_book != null)
             {
-                _bookList.Remove(_book);
-                AddBook(book);
+                var index = _bookList.IndexOf(_book);
+                _bookList[index] = book;
             }
-            return _bookList;
+            if(_book == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 

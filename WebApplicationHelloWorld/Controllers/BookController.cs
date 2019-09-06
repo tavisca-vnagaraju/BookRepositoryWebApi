@@ -50,10 +50,10 @@ namespace WebApplicationHelloWorld.Controllers
         }
 
         // PUT: api/Book/5
-        [HttpPut("{id}")]
-        public Response Put(int id, [FromBody] Book book)
+        [HttpPut]
+        public Response Put([FromBody] Book book)
         {
-            var result = services.UpdateBook(id, book, _bookRepository);
+            var result = services.UpdateBook(book, _bookRepository);
             HttpContext.Response.StatusCode = result.StatusCode;
             return result;
             //return _bookRepository.UpdateBook(id, book);
