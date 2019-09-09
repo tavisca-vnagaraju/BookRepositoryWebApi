@@ -37,6 +37,34 @@ namespace DAL.Controllers
             }
             return true;
         }
+
+        public bool IsBookExists(int id)
+        {
+            var book = _bookList.Find(x => x.Id == id);
+            if(book == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool DeleteBookById(int id)
+        {
+            var book = _bookList.Find(x => x.Id == id);
+            if (book != null)
+            {
+                var index = _bookList.IndexOf(book);
+                _bookList.RemoveAt(index);
+            }
+            if (book == null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 
 }

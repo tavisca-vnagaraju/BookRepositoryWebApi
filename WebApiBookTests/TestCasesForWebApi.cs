@@ -166,5 +166,38 @@ namespace WebApiBookTests
             var result = services.UpdateBook(bookUpdate, bookRepository);
             Assert.Equal(400, result.StatusCode);
         }
+        [Fact]
+        public void CheckForDeleteBookByIdPositive()
+        {
+            BookRepository bookRepository = new BookRepository();
+            Services services = new Services();
+            bookRepository.AddBook(new Book { Name = "Harry Potter", Author = "Rolling", Price = 400, Id = 1 });
+            bookRepository.AddBook(new Book { Name = "You Can Win", Author = "Shiv Khera", Price = 200, Id = 2 });
+            bookRepository.AddBook(new Book { Name = "Let us C", Author = "Yaswanth Kanetkar", Price = 300, Id = 3 });
+            var result = services.DeleteBookById(1, bookRepository);
+            Assert.Equal(200,result.StatusCode);
+        }
+        [Fact]
+        public void CheckForDeleteBookByIdNegative()
+        {
+            BookRepository bookRepository = new BookRepository();
+            Services services = new Services();
+            bookRepository.AddBook(new Book { Name = "Harry Potter", Author = "Rolling", Price = 400, Id = 1 });
+            bookRepository.AddBook(new Book { Name = "You Can Win", Author = "Shiv Khera", Price = 200, Id = 2 });
+            bookRepository.AddBook(new Book { Name = "Let us C", Author = "Yaswanth Kanetkar", Price = 300, Id = 3 });
+            var result = services.DeleteBookById(-1, bookRepository);
+            Assert.Equal(400, result.StatusCode);
+        }
+        [Fact]
+        public void CheckForDeleteBookByIdDoesNotExist()
+        {
+            BookRepository bookRepository = new BookRepository();
+            Services services = new Services();
+            bookRepository.AddBook(new Book { Name = "Harry Potter", Author = "Rolling", Price = 400, Id = 1 });
+            bookRepository.AddBook(new Book { Name = "You Can Win", Author = "Shiv Khera", Price = 200, Id = 2 });
+            bookRepository.AddBook(new Book { Name = "Let us C", Author = "Yaswanth Kanetkar", Price = 300, Id = 3 });
+            var result = services.DeleteBookById(5, bookRepository);
+            Assert.Equal(404, result.StatusCode);
+        }
     }
 }

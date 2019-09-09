@@ -61,8 +61,11 @@ namespace WebApplicationHelloWorld.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public Response Delete(int id)
         {
+            var result = services.DeleteBookById(id, _bookRepository);
+            HttpContext.Response.StatusCode = result.StatusCode;
+            return result;
         }
     }
 }

@@ -112,5 +112,33 @@ namespace ServiceLayer
                 response.ErrorMessages.Add("Author Name Should Have only Characters");
             }
         }
+
+        public Response DeleteBookById(int id, BookRepository bookRepository)
+        {
+            if (validation.IsIdNegative(id))
+            {
+                response.StatusCode = 400;
+                response.ErrorMessages.Add("Invalid Id, Id should be a positive number.");
+            }
+            else
+            {
+                var isBookExists = bookRepository.IsBookExists(id);
+                if (isBookExists)
+                {
+                    var IsBookDeleted = bookRepository.DeleteBookById(id);
+                    if (IsBookDeleted)
+                    {
+                        response.StatusCode = 200;
+                        response.Result = bookRepository.GetAllBooks();
+                    }
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.ErrorMessages.Add("Book Not Found");
+                }
+            }
+            return response;
+        }
     }
 }
