@@ -1,0 +1,46 @@
+===========================================================
+TimeStamp:9/9/2019 6:59:29 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/9/2019 6:59:31 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/9/2019 6:59:32 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/9/2019 7:00:25 PM|Event Name:Get|StatusCode:200
+===========================================================
+TimeStamp:9/9/2019 7:06:36 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/9/2019 7:08:06 PM|Event Name:Post|StatusCode:400
+Errors List:
+1.Invalid Id, Id should be a positive number.
+2.Book Name Should Have only Characters
+===========================================================
+TimeStamp:9/9/2019 7:08:18 PM|Event Name:Post|StatusCode:400
+Errors List:
+1.Invalid Id, Id should be a positive number.
+2.Invalid Price, Price should be a positive number.
+3.Name should not be Null
+4.Category should not be Null
+5.Author should not be Null
+===========================================================
+TimeStamp:9/9/2019 7:08:28 PM|Event Name:Post|StatusCode:400
+Errors List:
+1.Name should not be Null
+2.Category should not be Null
+3.Author should not be Null
+===========================================================
+TimeStamp:9/9/2019 7:09:04 PM|Event Name:Post|StatusCode:200
+===========================================================
+TimeStamp:9/9/2019 7:17:51 PM|Event Name:Post|StatusCode:200
+===========================================================
+TimeStamp:9/9/2019 7:18:16 PM|Event Name:Post|StatusCode:400
+Errors List:
+jyfjhvkg1.Invalid Id, Id should be a positive number.
+2.Book Category Should Have only Characters

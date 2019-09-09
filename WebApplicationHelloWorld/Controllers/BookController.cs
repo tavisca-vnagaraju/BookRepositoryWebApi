@@ -17,6 +17,11 @@ namespace WebApplicationHelloWorld.Controllers
     {
         private readonly BookRepository _bookRepository;
         Services services;
+        private void LogToFile(string methodName, Response result)
+        {
+            FileLogger fileLogger = new FileLogger(DateTime.Now.ToString(), methodName , result.StatusCode, result.ErrorMessages);
+            fileLogger.Log();
+        }
         public BookController(BookRepository bookRepository)
         {
             _bookRepository = bookRepository;
@@ -25,8 +30,9 @@ namespace WebApplicationHelloWorld.Controllers
         // GET: api/Book
         [HttpGet]
         public Response Get()
-        {
+        {   
             var result = services.GetAllBooks(_bookRepository);
+            LogToFile("Get",result);
             return result;
             //return _bookRepository.GetAllBooks();
         }
@@ -46,6 +52,7 @@ namespace WebApplicationHelloWorld.Controllers
         {
             var result = services.PostByBook(book, _bookRepository);
             HttpContext.Response.StatusCode = result.StatusCode;
+            LogToFile("Post",result);
             return result;
         }
 
