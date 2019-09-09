@@ -2,6 +2,7 @@
 using DAL.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ServiceLayer
@@ -10,10 +11,12 @@ namespace ServiceLayer
     {
         Response response;
         Validation validation;
+        BookValidator validator;
         public Services()
         {
             response = new Response();
             validation = new Validation();
+            validator = new BookValidator();
         }
         public Response GetById(int id, BookRepository bookRepository)
         {
@@ -58,7 +61,8 @@ namespace ServiceLayer
 
         public Response PostByBook(Book book, BookRepository bookRepository)
         {
-            Validate(book);
+            //Validate(book);
+            FluentValidate(book);
             if (response.ErrorMessages.Count == 0)
             {
                 bookRepository.AddBook(book);
@@ -70,7 +74,8 @@ namespace ServiceLayer
 
         public Response UpdateBook(Book book, BookRepository bookRepository)
         {
-            Validate(book);
+            //Validate(book);
+            FluentValidate(book);
             var isBookUpdated = bookRepository.UpdateBook(book);
             if (isBookUpdated && response.ErrorMessages.Count == 0)
             {
@@ -110,6 +115,18 @@ namespace ServiceLayer
             {
                 response.StatusCode = 400;
                 response.ErrorMessages.Add("Author Name Should Have only Characters");
+            }
+        }
+        private void FluentValidate(Book book)
+        {
+            var result = validator.Validate(book);
+            if (!result.IsValid)
+            {
+                foreach (var item in result.Errors)
+                {
+                    response.ErrorMessages.Add(item.ErrorMessage);
+                }
+                response.StatusCode = 400;
             }
         }
 
