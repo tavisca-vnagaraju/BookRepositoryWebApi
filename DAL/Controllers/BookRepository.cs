@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DAL.Controllers
 {
-    public class BookRepository
+    public class BookRepository: IBookRepository
     {
         private List<Book> _bookList = new List<Book>();
         
@@ -66,5 +66,4 @@ namespace DAL.Controllers
             return true;
         }
     }
-
 }

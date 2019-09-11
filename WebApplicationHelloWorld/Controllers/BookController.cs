@@ -15,23 +15,23 @@ namespace WebApplicationHelloWorld.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly BookRepository _bookRepository;
+        private readonly IBookRepository _bookRepository;
         Services services;
         private void LogToFile(string methodName, Response result)
         {
             FileLogger fileLogger = new FileLogger(DateTime.Now.ToString(), methodName , result.StatusCode, result.ErrorMessages);
             fileLogger.Log();
         }
-        public BookController(BookRepository bookRepository)
+        public BookController(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
-            services = new Services();
+            services = new Services(_bookRepository);
         }
         // GET: api/Book
         [HttpGet]
         public Response Get()
         {   
-            var result = services.GetAllBooks(_bookRepository);
+            var result = services.GetAllBooks();
             LogToFile("Get",result);
             return result;
             //return _bookRepository.GetAllBooks();
@@ -41,7 +41,7 @@ namespace WebApplicationHelloWorld.Controllers
         [HttpGet("{id}", Name = "Get")]
         public Response Get(int id)
         {
-            var result = services.GetById(id, _bookRepository);
+            var result = services.GetById(id);
             HttpContext.Response.StatusCode = result.StatusCode;
             return result;
         }
@@ -50,7 +50,7 @@ namespace WebApplicationHelloWorld.Controllers
         [HttpPost]
         public Response Post(Book book)
         {
-            var result = services.PostByBook(book, _bookRepository);
+            var result = services.PostByBook(book);
             HttpContext.Response.StatusCode = result.StatusCode;
             LogToFile("Post",result);
             return result;
@@ -60,7 +60,7 @@ namespace WebApplicationHelloWorld.Controllers
         [HttpPut]
         public Response Put([FromBody] Book book)
         {
-            var result = services.UpdateBook(book, _bookRepository);
+            var result = services.UpdateBook(book);
             HttpContext.Response.StatusCode = result.StatusCode;
             return result;
             //return _bookRepository.UpdateBook(id, book);
@@ -70,7 +70,7 @@ namespace WebApplicationHelloWorld.Controllers
         [HttpDelete("{id}")]
         public Response Delete(int id)
         {
-            var result = services.DeleteBookById(id, _bookRepository);
+            var result = services.DeleteBookById(id);
             HttpContext.Response.StatusCode = result.StatusCode;
             return result;
         }

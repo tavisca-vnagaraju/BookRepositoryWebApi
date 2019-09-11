@@ -12,13 +12,15 @@ namespace ServiceLayer
         Response response;
         Validation validation;
         BookValidator validator;
-        public Services()
+        private IBookRepository _bookRepository;
+        public Services(IBookRepository bookRepository)
         {
             response = new Response();
             validation = new Validation();
             validator = new BookValidator();
+            _bookRepository = bookRepository;
         }
-        public Response GetById(int id, BookRepository bookRepository)
+        public Response GetById(int id)
         {
             if (validation.IsIdNegative(id))
             {
@@ -27,7 +29,7 @@ namespace ServiceLayer
             }
             else
             {
-                var books = bookRepository.GetAllBooks();
+                var books = _bookRepository.GetAllBooks();
                 var book = books.Find(x => x.Id == id);
                 if (book == null)
                 {
@@ -43,9 +45,9 @@ namespace ServiceLayer
             return response;
         }
 
-        public Response GetAllBooks(BookRepository bookRepository)
+        public Response GetAllBooks()
         {
-            var books = bookRepository.GetAllBooks();
+            var books = _bookRepository.GetAllBooks();
             if(books.Count <=0)
             {
                 response.StatusCode = 400;
@@ -59,28 +61,28 @@ namespace ServiceLayer
             return response;
         }
 
-        public Response PostByBook(Book book, BookRepository bookRepository)
+        public Response PostByBook(Book book)
         {
             //Validate(book);
             FluentValidate(book);
             if (response.ErrorMessages.Count == 0)
             {
-                bookRepository.AddBook(book);
+                _bookRepository.AddBook(book);
                 response.StatusCode = 200;
-                response.Result = bookRepository.GetAllBooks();
+                response.Result = _bookRepository.GetAllBooks();
             }
             return response;
         }
 
-        public Response UpdateBook(Book book, BookRepository bookRepository)
+        public Response UpdateBook(Book book)
         {
             //Validate(book);
             FluentValidate(book);
-            var isBookUpdated = bookRepository.UpdateBook(book);
+            var isBookUpdated = _bookRepository.UpdateBook(book);
             if (isBookUpdated && response.ErrorMessages.Count == 0)
             {
                 response.StatusCode = 200;
-                response.Result = bookRepository.GetAllBooks();
+                response.Result = _bookRepository.GetAllBooks();
                 
             }
             else if(response.ErrorMessages.Count == 0)
@@ -130,7 +132,7 @@ namespace ServiceLayer
             }
         }
 
-        public Response DeleteBookById(int id, BookRepository bookRepository)
+        public Response DeleteBookById(int id)
         {
             if (validation.IsIdNegative(id))
             {
@@ -139,14 +141,14 @@ namespace ServiceLayer
             }
             else
             {
-                var isBookExists = bookRepository.IsBookExists(id);
+                var isBookExists = _bookRepository.IsBookExists(id);
                 if (isBookExists)
                 {
-                    var IsBookDeleted = bookRepository.DeleteBookById(id);
+                    var IsBookDeleted = _bookRepository.DeleteBookById(id);
                     if (IsBookDeleted)
                     {
                         response.StatusCode = 200;
-                        response.Result = bookRepository.GetAllBooks();
+                        response.Result = _bookRepository.GetAllBooks();
                     }
                 }
                 else

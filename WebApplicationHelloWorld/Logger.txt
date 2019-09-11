@@ -42,5 +42,64 @@ TimeStamp:9/9/2019 7:17:51 PM|Event Name:Post|StatusCode:200
 ===========================================================
 TimeStamp:9/9/2019 7:18:16 PM|Event Name:Post|StatusCode:400
 Errors List:
-jyfjhvkg1.Invalid Id, Id should be a positive number.
+1.Invalid Id, Id should be a positive number.
 2.Book Category Should Have only Characters
+===========================================================
+TimeStamp:9/10/2019 1:18:02 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/10/2019 1:21:10 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/10/2019 1:21:54 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/10/2019 1:22:27 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/10/2019 1:22:33 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/10/2019 1:23:20 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/10/2019 1:24:27 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/10/2019 1:24:27 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/10/2019 1:24:29 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/10/2019 1:26:36 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/10/2019 1:29:01 PM|Event Name:Post|StatusCode:400
+Errors List:
+1.Invalid Id, Id should be a positive number.
+2.Category Name Should Have only Characters
+===========================================================
+TimeStamp:9/10/2019 1:29:30 PM|Event Name:Post|StatusCode:400
+Errors List:
+1.Invalid Id, Id should be a positive number.
+2.Book Name Should Have only Characters
+3.Category Name Should Have only Characters
+===========================================================
+TimeStamp:9/11/2019 4:28:32 PM|Event Name:Get|StatusCode:400
+Errors List:
+1.Books Not Found
+===========================================================
+TimeStamp:9/11/2019 4:29:21 PM|Event Name:Post|StatusCode:200
+===========================================================
+TimeStamp:9/11/2019 4:29:49 PM|Event Name:Get|StatusCode:200

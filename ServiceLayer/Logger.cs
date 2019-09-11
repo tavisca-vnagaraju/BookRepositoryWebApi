@@ -28,7 +28,7 @@ namespace ServiceLayer
             streamWriter.WriteLine("TimeStamp:"+_timeStamp + "|"+ "Event Name:"+_event + "|"+"StatusCode:"+ _statusCode);
             if(_errors.Count > 0)
             {
-                streamWriter.Write("Errors List:\njyfjhvkg");
+                streamWriter.Write("Errors List:\n");
                 for (int index = 0; index < _errors.Count; index++)
                 {
                     streamWriter.WriteLine((index+1)+"."+_errors[index]);
