@@ -99,6 +99,7 @@ namespace ServiceLayer
             {
                 response.StatusCode = 200;
                 response.Result = _bookRepository.GetAllBooks();
+                client.Remove(book.Id.ToString());
                 
             }
             else if(response.ErrorMessages.Count == 0)
@@ -158,6 +159,7 @@ namespace ServiceLayer
             else
             {
                 var isBookExists = _bookRepository.IsBookExists(id);
+                client.Remove(id.ToString());
                 if (isBookExists)
                 {
                     var IsBookDeleted = _bookRepository.DeleteBookById(id);

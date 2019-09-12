@@ -53,7 +53,7 @@ namespace WebApiBookTests
         {
             BookRepository bookRepository = new BookRepository();
             Services services = new Services(bookRepository);
-            var result = services.GetById(1);
+            var result = services.GetById(69);
             Assert.Equal(404, result.StatusCode);
         }
         [Fact]
