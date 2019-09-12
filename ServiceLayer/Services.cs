@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using ServiceStack.Redis;
 
 namespace ServiceLayer
 {
@@ -13,15 +14,19 @@ namespace ServiceLayer
         Validation validation;
         BookValidator validator;
         private IBookRepository _bookRepository;
+        RedisManagerPool manager = new RedisManagerPool("localhost:6379");
+        IRedisClient client;
         public Services(IBookRepository bookRepository)
         {
             response = new Response();
             validation = new Validation();
             validator = new BookValidator();
             _bookRepository = bookRepository;
+            client = manager.GetClient();
         }
         public Response GetById(int id)
         {
+            
             if (validation.IsIdNegative(id))
             {
                 response.StatusCode = 400;
@@ -29,17 +34,28 @@ namespace ServiceLayer
             }
             else
             {
-                var books = _bookRepository.GetAllBooks();
-                var book = books.Find(x => x.Id == id);
-                if (book == null)
+                Book book;
+                if (client.Get<Book>(id.ToString()) != null)
                 {
-                    response.StatusCode = 404;
-                    response.ErrorMessages.Add("Book Not Found");
+                    book = client.Get<Book>(id.ToString());
+                    response.IsResultFromCache = true;
+                    response.StatusCode = 200;
+                    response.Result = book;
                 }
                 else
                 {
-                    response.StatusCode = 200;
-                    response.Result = book;
+                    book = _bookRepository.GetBookById(id);
+                    if (book == null)
+                    {
+                        response.StatusCode = 404;
+                        response.ErrorMessages.Add("Book Not Found");
+                    }
+                    else
+                    {
+                        response.StatusCode = 200;
+                        response.Result = book;
+                        client.Set(book.Id.ToString(), book, DateTime.UtcNow.AddMinutes(1));
+                    }
                 }
             }
             return response;

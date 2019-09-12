@@ -65,5 +65,11 @@ namespace DAL.Controllers
             }
             return true;
         }
+
+        public Book GetBookById(int id)
+        {
+            var book = _bookList.Find(x => x.Id == id);
+            return book;
+        }
     }
 }

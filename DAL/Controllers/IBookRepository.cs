@@ -10,6 +10,6 @@ namespace DAL.Controllers
         bool UpdateBook(Book book);
         bool IsBookExists(int id);
         bool DeleteBookById(int id);
-
+        Book GetBookById(int id);
     }
 }
